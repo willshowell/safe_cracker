@@ -7,12 +7,15 @@
 # r1:  next most outer row - physically connected to r0
 # r1s: can overlap r1 and is slotted
 # r2:  inside the r1 row but is connected to r1s
-# ....and so on
+# ...
+# r3s: inner most row is slotted and not attached to anythin
 #
-# try to get a sum of 40 for each column
+# trying to get a sum of 40 for each column
 #
 
 from collections import deque
+
+attempts = 1
 
 # r0 and r1 are linked together just like this
 r0  = [10,  2, 15, 23, 19,  3,  2,  3, 27, 20, 11, 27, 10, 19, 10, 13]#
@@ -29,6 +32,8 @@ r3  = [ 4,  8,  6,  3,  1,  6, 10,  6, 10,  2,  6, 10,  4,  1,  5,  5]
 #r3s is kinda down for whatever
 r3s = [10, -1, 10, -1, 10, -1,  6, -1, 13, -1,  3, -1,  3, -1,  6, -1]#
 
+#rotations shows [r1s + r2, r2s + r3, r3s]
+rotations = [0, 0, 0]
 
 def cover(bottom, slatted_top):
     combined = [0]*len(bottom)
@@ -52,9 +57,30 @@ def rotate(first, linked, clockwise_amt):
         linked = deque(linked)
         linked.rotate(clockwise_amt)
     return list(first), list(linked)
+    
+def check_win(row0, row1, row2, row3):
+    col_totals = sum_cols(row0, row1, row2, row3)
+    if all(col == 40 for col in col_totals):  
+        return True
+    else:
+        return False
+
+def print_victory():
+    success_string = "Found the answer after {} attempts".format(attempts)
+    print("="*len(success_string))
+    print(success_string)
+    print()
+    print("rotations: " + str(rotations))  
+    print("="*len(success_string))
 
 
-
+# here's where all the magic happens
+while True:
+    if check_win(r0, cover(r1, r1s), cover(r2, r2s), cover(r3, r3s)):
+        print_victory()
+        exit()
+    else:
+        pass
 
 
 
