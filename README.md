@@ -1,2 +1,2 @@
-# safe_cracker
-Cracking the SafeCracker Puzzle that I found in Anku's apartment
+# SafeCracker Puzzle
+Cracking the obnoxious puzzle that I found in Anku's apartment through brute force!
