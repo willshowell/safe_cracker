@@ -14,10 +14,11 @@
 #
 
 from collections import deque
+import time
 
-attempts = 1
+attempts = 0
 
-# r0 and r1 are linked together just like this
+# r0 and r1 are linked together just like this (r0 is our constant)
 r0  = [10,  2, 15, 23, 19,  3,  2,  3, 27, 20, 11, 27, 10, 19, 10, 13]#
 r1  = [ 9, 22,  9,  5, 10,  5,  1, 24,  2, 10,  9,  7,  3, 12, 24, 10]#
 
@@ -53,10 +54,12 @@ def sum_cols(row0, row1, row2, row3):
 def rotate(first, linked, clockwise_amt):
     first = deque(first)
     first.rotate(clockwise_amt)  
-    if linked:
+    first = list(first)
+    if linked is not None:
         linked = deque(linked)
         linked.rotate(clockwise_amt)
-    return list(first), list(linked)
+        linked = list(linked)
+    return first, linked
     
 def check_win(row0, row1, row2, row3):
     col_totals = sum_cols(row0, row1, row2, row3)
@@ -73,14 +76,39 @@ def print_victory():
     print("rotations: " + str(rotations))  
     print("="*len(success_string))
 
+def rotation_step():
+    global r3s, r3, r2s, r2, r1s, rotations
+    
+    # Rotate the inner ring once
+    r3s = rotate(r3s, None, 1)[0]
+    rotations[2] += 1
+    
+    # Rotate the middle ring once if the inner has gone full circle
+    if rotations[2]%16 == 0:
+        r2s, r3 = rotate(r2s, r3, 1)
+        rotations[1] += 1
+        
+        # Rotate the outer ring once if both have gone full circle
+        if rotations[1]%16 == 0:
+            r1s, r2 = rotate(r1s, r2, 1)
+            rotations[0] += 1 
 
 # here's where all the magic happens
-while True:
-    if check_win(r0, cover(r1, r1s), cover(r2, r2s), cover(r3, r3s)):
-        print_victory()
-        exit()
-    else:
-        pass
+if __name__ == '__main__':
+    
+    while attempts < 4096:
+        print(rotations)
+        attempts += 1
+        if check_win(r0, cover(r1, r1s), cover(r2, r2s), cover(r3, r3s)):
+            print_victory()
+            exit()
+        else:
+            rotation_step()
+            
+    print("I tried {} times and never could find it :(".format(attempts))
+    print(rotations)
+        
+        
 
 
 
