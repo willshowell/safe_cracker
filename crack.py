@@ -19,22 +19,25 @@ import time
 attempts = 0
 
 # r0 and r1 are linked together just like this (r0 is our constant)
-r0  = [10,  2, 15, 23, 19,  3,  2,  3, 27, 20, 11, 27, 10, 19, 10, 13]#
-r1  = [ 9, 22,  9,  5, 10,  5,  1, 24,  2, 10,  9,  7,  3, 12, 24, 10]#
+r0  = [10,  2, 15, 23, 19,  3,  2,  3, 27, 20, 11, 27, 10, 19, 10, 13]
+r1  = [ 9, 22,  9,  5, 10,  5,  1, 24,  2, 10,  9,  7,  3, 12, 24, 10]
 
 # r1s and r2 are linked together just like this
-r1s = [ 9, -1, 16, -1, 17, -1,  2, -1,  2, -1, 10, -1, 15, -1,  6, -1]#
-r2  = [ 1,  1, 11, 27, 14,  5,  5,  7,  8, 24,  8,  3,  6, 15, 22,  6]#
+r1s = [ 9, -1, 16, -1, 17, -1,  2, -1,  2, -1, 10, -1, 15, -1,  6, -1]
+r2  = [ 1,  1, 11, 27, 14,  5,  5,  7,  8, 24,  8,  3,  6, 15, 22,  6]
 
 # r2s and r3 are linked together just like this
 r2s = [14, -1,  5, -1, 10, -1,  2, -1, 22, -1,  2, -1, 17, -1, 15, -1]
 r3  = [ 4,  8,  6,  3,  1,  6, 10,  6, 10,  2,  6, 10,  4,  1,  5,  5]
 
 #r3s is kinda down for whatever
-r3s = [10, -1, 10, -1, 10, -1,  6, -1, 13, -1,  3, -1,  3, -1,  6, -1]#
+r3s = [10, -1, 10, -1, 10, -1,  6, -1, 13, -1,  3, -1,  3, -1,  6, -1]
 
 #rotations shows [r1s + r2, r2s + r3, r3s]
 rotations = [0, 0, 0]
+
+#answer has been determined to be [3, 57, 914]
+#[3, 9, 2]
 
 def cover(bottom, slatted_top):
     combined = [0]*len(bottom)
@@ -75,6 +78,14 @@ def print_victory():
     print()
     print("rotations: " + str(rotations))  
     print("="*len(success_string))
+    print()
+    print("You need to rotate the bottom row {} time(s) clockwise.".
+          format(rotations[0]%16))
+    print("You should then rotate the middle one {} time(s) clockwise.".
+          format(rotations[1]%16))
+    print("Lastly, rotate the top one {} time(s) clockwise!".
+          format(rotations[2]%16))
+    print()
 
 def rotation_step():
     global r3s, r3, r2s, r2, r1s, rotations
@@ -97,7 +108,7 @@ def rotation_step():
 if __name__ == '__main__':
     
     while attempts < 4096:
-        print(rotations)
+        #print(rotations)
         attempts += 1
         if check_win(r0, cover(r1, r1s), cover(r2, r2s), cover(r3, r3s)):
             print_victory()
@@ -108,6 +119,7 @@ if __name__ == '__main__':
     print("I tried {} times and never could find it :(".format(attempts))
     print(rotations)
         
+    
         
 
 
