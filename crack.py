@@ -9,6 +9,10 @@
 # r2:  inside the r1 row but is connected to r1s
 # ....and so on
 #
+# try to get a sum of 40 for each column
+#
+
+from collections import deque
 
 # r0 and r1 are linked together just like this
 r0  = [10,  2, 15, 23, 19,  3,  2,  3, 27, 20, 11, 27, 10, 19, 10, 13]#
@@ -34,5 +38,30 @@ def cover(bottom, slatted_top):
         else:
             combined[pos] = bottom[pos]
     return combined
+    
+def sum_cols(row0, row1, row2, row3):
+    summed = [0]*len(row0)
+    for pos, num in enumerate(row0):
+        summed[pos] = row0[pos]+row1[pos]+row2[pos]+row3[pos]
+    return summed
+    
+def rotate(first, linked, clockwise_amt):
+    first = deque(first)
+    first.rotate(clockwise_amt)  
+    if linked:
+        linked = deque(linked)
+        linked.rotate(clockwise_amt)
+    return list(first), list(linked)
 
-print(cover(r1, r1s))
+
+
+
+
+
+
+
+
+
+
+
+
